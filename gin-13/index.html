@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Album Manager</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(135deg, #2980b9, #6dd5fa);
+      color: #333;
+      margin: 0;
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #fff;
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+      text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      text-align: center;
+      color: #34495e;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .album-form {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background: linear-gradient(135deg, #1abc9c, #16a085);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #16a085, #0e6655);
+      transform: scale(1.05);
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      font-size: 14px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: #1abc9c;
+      outline: none;
+      box-shadow: 0 0 8px rgba(26, 188, 156, 0.5);
+    }
+
+    .album-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      list-style: none;
+      padding: 0;
+    }
+
+    .album-item {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+    }
+
+    .album-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .album-item strong {
+      display: block;
+      font-size: 18px;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    #openModalBtn {
+      display: block;
+      margin: 20px auto;
+      width: 220px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 10px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #e67e22, #d35400);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    #openModalBtn:hover {
+      background: linear-gradient(135deg, #d35400, #e74c3c);
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 500px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #2980b9, #6dd5fa);
+      padding: 20px;
+      text-align: center;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      border-top: 2px solid #1abc9c;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .album-list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Album Manager</h1>
+
+  <div class="album-form">
+    <h2>Album List</h2>
+    <ul id="albumList" class="album-list"></ul>
+  </div>
+
+  <button id="openModalBtn">+ Add New Album</button>
+
+  <div class="album-form">
+    <h2>Search Album by ID</h2>
+    <form id="searchForm">
+      <input type="text" id="searchAlbumId" placeholder="Enter Album ID" required />
+      <button type="submit">Search</button>
+    </form>
+    <div id="searchResult"></div>
+  </div>
+
+  <div id="addAlbumModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Add New Album</h2>
+      <form id="albumForm">
+        <input type="text" id="albumId" placeholder="Album ID" required />
+        <input type="text" id="albumTitle" placeholder="Album Title" required />
+        <input type="text" id="albumArtist" placeholder="Artist Name" required />
+        <input type="number" step="0.01" id="albumPrice" placeholder="Album Price" required />
+        <button type="submit">Add Album</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2024 Album Manager | Designed by Nabilah Atika Rahma</p>
+  </footer>  
+    <script>
+      fetch("/albums")
+        .then((response) => response.json())
+        .then((albums) => {
+          const albumList = document.getElementById("albumList");
+          albums.forEach((album) => {
+            const li = document.createElement("li");
+            li.className = "album-item";
+            li.innerHTML = `
+                        <strong>${album.title}</strong><br>
+                        Artist: ${album.artist}<br>
+                        Price: $${album.price}<br>
+                        ID: ${album.id}
+                    `;
+            albumList.appendChild(li);
+          });
+        });
+
+      document
+        .getElementById("albumForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const newAlbum = {
+            id: document.getElementById("albumId").value,
+            title: document.getElementById("albumTitle").value,
+            artist: document.getElementById("albumArtist").value,
+            price: parseFloat(document.getElementById("albumPrice").value),
+          };
+
+          fetch("/albums", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newAlbum),
+          })
+            .then((response) => response.json())
+            .then((album) => {
+              const albumList = document.getElementById("albumList");
+              const li = document.createElement("li");
+              li.className = "album-item";
+              li.innerHTML = `
+                    <strong>${album.title}</strong><br>
+                    Artist: ${album.artist}<br>
+                    Price: $${album.price}<br>
+                    ID: ${album.id}
+                `;
+              albumList.appendChild(li);
+              document.getElementById("albumForm").reset();
+              modal.style.display = "none";
+            });
+        });
+
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const albumId = document.getElementById("searchAlbumId").value;
+
+          fetch(`/albums/${albumId}`)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Album not found");
+              }
+              return response.json();
+            })
+            .then((album) => {
+              const resultDiv = document.getElementById("searchResult");
+              resultDiv.innerHTML = `
+                <div class="album-item">
+                    <strong>${album.title}</strong><br>
+                    Artist: ${album.artist}<br>
+                    Price: $${album.price}<br>
+                    ID: ${album.id}
+                </div>
+            `;
+            })
+            .catch((error) => {
+              const resultDiv = document.getElementById("searchResult");
+              resultDiv.innerHTML = `<p style="color: red;">Album not found</p>`;
+            });
+        });
+
+      const modal = document.getElementById("addAlbumModal");
+      const openBtn = document.getElementById("openModalBtn");
+      const closeBtn = document.getElementsByClassName("close")[0];
+
+      openBtn.onclick = function () {
+        modal.style.display = "flex";
+        modal.style.justifyContent = "center";
+        modal.style.alignItems = "center";
+      };
+
+      closeBtn.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+    </script>
+  </body>
+</html>
+
+
