@@ -31,3 +31,10 @@ To started with this Go Project
 3. To compile an run the app:  `go build wiki.go` and `./wiki`
 4. Start server and go to `http://localhost:8080`
 
+<br>
+
+# ASSIGNMENT DATA ACCESS AND GIN
+
+- WEEK 9 10 11 [Introduction Go & Web App](https://github.com/ranabel/Web-Application-Go)
+- WEEK 12 [Database Access](https://github.com/ranabel/Web-Application-Go/tree/main/data-12)
+- WEEK 13 [GIN Framework](https://github.com/ranabel/Web-Application-Go/tree/main/gin-13)
