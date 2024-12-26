@@ -35,6 +35,7 @@ To started with this Go Project
 
 # ASSIGNMENT DATA ACCESS AND GIN
 
-- WEEK 9 10 11 [Introduction Go & Web App](https://github.com/ranabel/Web-Application-Go)
+- WEEK 9 10 [Introduction Go](https://github.com/ranabel/PBKK-Go)
+- WEEK 11 [Web App](https://github.com/ranabel/Web-Application-Go)
 - WEEK 12 [Database Access](https://github.com/ranabel/Web-Application-Go/tree/main/data-12)
 - WEEK 13 [GIN Framework](https://github.com/ranabel/Web-Application-Go/tree/main/gin-13)
